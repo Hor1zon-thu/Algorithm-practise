@@ -32,14 +32,14 @@ class Multi_attention(nn.Module):
 
         k = k.transpose(2,3)
 
-        atten_scores = torch.matmul(q,k)/math.sqrt(q.size(-1))
+        atten_scores = torch.matmul(q,k)/math.sqrt(q.size(-1))   # [batch_size, num_heads, seq_len_q, seq_len_kv]
         if mask is not None :
-            atten_scores = atten_scores.masked_fill(mask,-1e9)
+            atten_scores = atten_scores.masked_fill(mask.unsqueeze(1) == False,-1e9)
 
         weights = self.softmax(atten_scores)
         weights = self.dropout(weights)
 
-        outputs =torch.matmul(weights,v)
+        outputs =torch.matmul(weights,v)  # [batch_size, num_heads, seq_len_q, head_dim]
 
         outputs = outputs.transpose(1, 2).contiguous().view(batch_size, seq_len_q, -1)
 
@@ -60,4 +60,22 @@ if __name__ == '__main__':
     mask = torch.randn(size=(batch_size, seq_len, seq_len))
     mask = mask.bool()
 
-    print('单头的自注意力结果', self_atten(x, x, mask).size())
+    print('多头的自注意力结果', self_atten(x, x, mask).size())
+
+    batch_size = 1  # 批量也就是句子的数量
+    emd_size = 128  # 一个token嵌入的维度
+    q_seq_len = 5  # q源的token长度
+    q_k_size = emd_size//8  # q和k的嵌入维度/head
+    k_v_seq_len = 7  # k_v源的token长度
+    v_size = emd_size//8  # v的嵌入维度/head
+    head=8 # 头的数量
+
+    x_q = torch.rand(size=(batch_size, q_seq_len, emd_size), dtype=torch.float)
+    x_k_v = torch.rand(size=(batch_size, k_v_seq_len, emd_size), dtype=torch.float)
+
+    cross_atten = Multi_attention(emd_size=emd_size, q_k_size=q_k_size, v_size=v_size,head_num=head)
+    # 初始化mask(batch,len_k,len_q)
+    mask = torch.randn(size=(batch_size, q_seq_len, k_v_seq_len))
+    mask = mask.bool()
+
+    print('多头的交叉注意力结果', cross_atten(x_q, x_k_v, mask).size())
