@@ -1,9 +1,9 @@
 import numpy as np
 
 #不使用torch库编写
-class muti_attention():
+class multi_attention():
     def __init__(self,emd_size,q_k_size,v_size,head_num,dropout=0.0,bias=None):
-        super(muti_attention,self).__init__()
+        super(multi_attention,self).__init__()
         self.emd_size =emd_size
         self.q_k_size = q_k_size
         self.v_size = v_size
@@ -90,7 +90,7 @@ if __name__ == '__main__' :
     v_size = emd_size // 8
 
     x = np.random.randn(batch_size,q_len,emd_size)
-    self_atten = muti_attention(emd_size=emd_size,q_k_size=q_k_size,v_size=v_size,head_num = head_num)
+    self_atten = multi_attention(emd_size=emd_size,q_k_size=q_k_size,v_size=v_size,head_num = head_num)
 
     mask = np.random.randn(batch_size,q_len,q_len)
     mask = mask.astype(bool)
@@ -107,7 +107,7 @@ if __name__ == '__main__' :
     x_q = np.random.rand(batch_size, q_seq_len, emd_size)
     x_k_v = np.random.rand(batch_size, k_v_seq_len, emd_size)
 
-    cross_atten = muti_attention(emd_size=emd_size, q_k_size=q_k_size, v_size=v_size,head_num=head)
+    cross_atten = multi_attention(emd_size=emd_size, q_k_size=q_k_size, v_size=v_size,head_num=head)
     mask = np.random.randn(batch_size, q_seq_len, k_v_seq_len)
     mask = mask.astype(bool)  #torch方法mask.bool()
 
