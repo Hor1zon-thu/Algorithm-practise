@@ -1,7 +1,7 @@
 import torch
 from transformer import Transformer
 
-# 参数设置
+# 初始参数设置
 src_vocab_size = 1000
 trg_vocab_size = 1000
 d_model = 512
@@ -29,7 +29,7 @@ trg = torch.randint(0, trg_vocab_size, (batch_size, trg_seq_len))
 ## 1. 编码器自注意力掩码：[batch, src_len, src_len]
 encoder_mask = torch.ones(batch_size, src_seq_len, src_seq_len).bool()  # [2,10,10]
 
-## 2. 解码器自注意力掩码：[batch, trg_len, trg_len]（下三角，屏蔽未来信息）
+## 2. 解码器自注意力掩码：[batch, trg_len, trg_len]（下三角）
 decoder_self_mask = torch.tril(torch.ones(trg_seq_len, trg_seq_len)).bool()  # [8,8]
 decoder_self_mask = decoder_self_mask.unsqueeze(0).expand(batch_size, -1, -1)  # [2,8,8]
 
