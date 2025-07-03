@@ -17,7 +17,6 @@ class Multi_attention(nn.Module):
 
         self.softmax = nn.Softmax(dim=-1)
 
-
     def forward(self,x_q,x_k_v,mask):
         batch_size,seq_len_q = x_q.size(0),x_q.size(1)
         seq_len_k_v =x_k_v.size(1)
@@ -31,6 +30,8 @@ class Multi_attention(nn.Module):
         v = v.view(batch_size,seq_len_k_v,self.head_num,-1).transpose(1,2)
 
         k = k.transpose(2,3)
+
+
 
         atten_scores = torch.matmul(q,k)/math.sqrt(q.size(-1))   # [batch_size, num_heads, seq_len_q, seq_len_kv]
         if mask is not None :
