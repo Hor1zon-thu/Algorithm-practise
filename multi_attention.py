@@ -5,7 +5,7 @@ import math
 
 class Multi_attention(nn.Module):
     def __init__(self,emd_size,q_k_size,v_size,head_num,dropout = 0.0):
-        super(Multi_attention,self).__init__()
+        super().__init__()
         # 输入的x为(batch_size,seq_len,emd_size)
         self.head_num =head_num
         self.Wq = nn.Linear(emd_size,q_k_size*head_num)

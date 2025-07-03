@@ -3,7 +3,7 @@ import numpy as np
 #不使用torch库编写
 class multi_attention():
     def __init__(self,emd_size,q_k_size,v_size,head_num,dropout=0.0,bias=None):
-        super(multi_attention,self).__init__()
+        super().__init__()
         self.emd_size =emd_size
         self.q_k_size = q_k_size
         self.v_size = v_size

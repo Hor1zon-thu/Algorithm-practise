@@ -5,7 +5,7 @@ import math
 
 class Onehead_Atten(nn.Module):
     def __init__(self, emd_size, q_k_size, v_size):
-        super(Onehead_Atten, self).__init__()
+        super().__init__()
 
         # 初始化矩阵Wk,Wv,Wq
         # 注意x为(batch_size,q_seq_len,emd_size),且要实现(Q*KT)所以，Q(q_len,q_k_size),K为(k_len,q_k_size)
