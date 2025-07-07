@@ -3,7 +3,7 @@ class Solution:
         n = len(s)
         left = 0
         max_length = 0
-        char_set = set()  # 使用集合来快速检查字符是否存在
+        char_set = set()
 
         for right in range(n):
             while s[right] in char_set:
